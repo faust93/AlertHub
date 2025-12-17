@@ -1,0 +1,32 @@
+---
+templates:
+    telegram: 1
+    ntfy: 2
+    apprise: 3
+
+vars:
+    alert_severity: "{{ alert['labels']['severity'] }}"
+    alert_status: "{{ alert['status'] }}"
+
+steps:
+    - if:
+        condition: >
+            {{ (alert_severity == 'critical' or alert_severity == 'warning')
+            and alert_status != 'muted'
+            and alert_status != 'acked'
+            and (not mute_time() and not maintenance()) }}
+        then:
+            - set:
+                notify_resp: "{{ notify() }}"
+            - for:
+                  var: res
+                  in: "{{ notify_resp }}"
+                  steps:
+                      - if:
+                          condition: "{{ 'ok' in res and res['ok'] }}"
+                          then:
+                              - call: log_info("Notification sent")
+                          else:
+                              - call: log_info("Error sending notification")
+        else:
+            - call: log_info("Notification condition was not met")

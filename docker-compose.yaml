@@ -1,0 +1,28 @@
+services:
+  alerthub-postgres:
+    image: postgres:17-alpine
+    container_name: alerthub-postgres
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=alerthub123
+      - POSTGRES_USER=alerthub
+      - POSTGRES_DB=alerthub
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - ./db:/var/lib/postgresql/data
+
+  alerthub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: alerthub:latest
+    container_name: alerthub
+    restart: unless-stopped
+    volumes:
+      - ./config.py:/alerthub/config.py
+    ports:
+      - 5000:5000
+    depends_on:
+        - alerthub-postgres

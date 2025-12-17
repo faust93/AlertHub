@@ -1,0 +1,18 @@
+{% if status == 'firing' %}🔥 FIRING 🔥{% else %}✅ RESOLVED ✅{% endif %}
+ID: {{ alert_id }}
+
+🔔 {{ labels.alertname }}
+{% if labels.severity == 'critical' -%}🚨 CRITICAL 🚨{% else %}� ️WARNING �{% endif %}
+🕙 Starts {{ startsAt }}
+{% if status == 'resolved' %}🕙 Ends {{ endsAt }}{% endif %}
+
+{{ annotations.summary }}
+
+🏷  Labels:
+{% for k, v in labels.items() -%}
+   - {{ k }}: {{ v }}
+{% endfor %}
+📝 Annotations:
+{% for k, v in annotations.items() -%}
+  - {{ k }}: {{ v }}
+{% endfor %}

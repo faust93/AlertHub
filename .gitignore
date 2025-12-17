@@ -1,0 +1,9 @@
+*~
+dev_*
+nohup.out
+.venv
+.npm
+__pycache__
+node_modules
+tmp
+db
