@@ -100,7 +100,7 @@ receivers:
 ```
 
 ### Expected alert schema
-~~json
+~~~json
 {
   "alert_id": "",
   "alertname": "",
@@ -128,7 +128,7 @@ receivers:
   "endsAt": "",
   "startsAt": ""
 }
-~~
+~~~
 
 ## Screenshots
 
